@@ -27,14 +27,36 @@ if (sure == true) {
 
 <div class="post-footer">
   <p>
-     {% if session.logged_in and session.userid == post[4] %}
+     {% if session.logged_in and session['userid'] == post[4]|int %}
        <a class="button" href="{{ url_for('postedit', posturl=post[2]) }}"><i class="fa fa-edit"></i> Edit</a></li>
         -
         <a class="button" onclick="checkIfSure()"><i class="fa fa-times"></i> Delete</a>
      {% endif %}</p>
 </div>
-
-<center>
+<div>
+  <p><b>{{ comment|length }} Comments</b></p>
+  <hr>
+  {% for data in comment %}
+  <p><b>{% if not data.userid|int == 0 %}
+          Admin
+        {% else %} 
+          Anonymous 
+        {% endif %}
+  :</b> {{data.comment}}</p>
+  {% else %}
+  <p>No Comment! Be the first to comment.</p>
+  {% endfor %}
+  <hr>
+  <p>Add Comment:</p>
+  <div class="formContainer">
+  <form action="{{ url_for('doComment', posturl=post[2]) }}" method=post>
+    <input style="padding: 12px 20px;margin: 8px 0;display: inline-block;border: 1px solid #ccc;border-radius: 4px;box-sizing: border-box;" type=text id="comment" name="comment" placeholder="Start the discussion..."></input>
+    <input type=submit value="Add Comment">
+  </form>
+  </div>
+  <hr>
+</div>
+<!-- <center>
   <div id="disqus_thread"></div>
   <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
@@ -50,6 +72,6 @@ if (sure == true) {
     })();
   </script>
   <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-</center>
+</center> -->
 
 {% endblock %}

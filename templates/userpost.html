@@ -5,8 +5,8 @@
   {% for data in posts %}
     <li><a href="/post/{{data.posturl}}">{{ data.posttitle}} </a> - {{ data.postdate[0:10] }} </li>
   {% else %}
-    <h3>No other admins yet.</h3>
-    <p>This website is still new, wait for content to come.</p>
+    <h3>No Post yet.</h3>
+    <p>This Admin is still new, wait for content to come.</p>
   {% endfor %}
 </ul>
 

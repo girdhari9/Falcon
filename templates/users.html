@@ -5,7 +5,7 @@
   <ul class="admin">
     <h3>Author List.</h3>
   {% for data in profile %}
-    <li><a href="postlist/{{ data.userid }}"> {{ data.username}} </a></li>
+    <li><a href="postlist/{{ data.userid }}"> {{ data.fullname}} </a></li>
   {% else %}
     <h3>No other admins yet.</h3>
     <p>This website is still new, wait for content to come.</p>

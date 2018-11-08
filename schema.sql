@@ -28,3 +28,12 @@ create table if not exists users (
   pagedate TIMESTAMP
   DEFAULT CURRENT_TIMESTAMP
 );
+
+create table if not exists comments (
+  commentid integer primary key autoincrement,
+  postid text not null,
+  userid text not null,
+  comment text not null,
+  pagedate TIMESTAMP
+  DEFAULT CURRENT_TIMESTAMP
+);

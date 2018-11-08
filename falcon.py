@@ -84,8 +84,13 @@ def getPostsWithAuthor(userid):
 
 def getAdmin(userid):
   getDetail = g.db.execute('select * from users where not userid = ?',(userid,))
-  adminProfile = [dict(userid=detail[0], username=detail[1]) for detail in getDetail.fetchall()]
+  adminProfile = [dict(userid=detail[0], username=detail[1], fullname=detail[3]) for detail in getDetail.fetchall()]
   return adminProfile
+
+def getCommnet(posturl):
+  getDetail = g.db.execute('select * from comments where postid = (select postid from posts where posturl= ?)',(posturl,))
+  comment = [dict(userid=detail[2], comment=detail[3], cmttime=detail[4]) for detail in getDetail.fetchall()]
+  return comment
 
 def editpage(pageurl):
   if session.get('logged_in'):
@@ -96,6 +101,11 @@ def editpage(pageurl):
     return page
   else:
     abort(404)
+
+def getPostid(posturl):
+  getDetail = g.db.execute('select postid from posts where posturl= ?',(posturl,))
+  for postid in getDetail.fetchall():
+    return postid[0]
 
 @app.before_request
 def before_request():
@@ -117,7 +127,7 @@ def show_index():
 
 @app.route('/post/<posturl>')
 def show_post(posturl):
-  return render_template('post.html', post=single_post(posturl), posts=get_posts(), pages=get_pages())
+  return render_template('post.html', post=single_post(posturl), comment=getCommnet(posturl),  pages=get_pages())
 
 @app.route('/post/<posturl>/edit')
 def postedit(posturl):
@@ -282,6 +292,20 @@ def doRegister():
       session['error'] = error
       return redirect(request.url_root) #with message
   return render_template('register.html', pages=get_pages())
+
+@app.route('/submit.comment/<posturl>', methods=['GET', 'POST'])
+def doComment(posturl):
+  postid = getPostid(posturl)
+  if session.get('logged_in'):
+    userid = session['userid']
+  else:
+    userid = 0
+  if request.method == 'POST':
+    g.db.execute('insert into comments (postid, userid, comment) values (?, ?, ?)',(postid, userid, request.form['comment']))
+    g.db.commit()
+    return redirect(request.url_root)
+  else:
+    return redirect(request.url_root) #with message
 
 @app.route('/logout')
 def logout():
