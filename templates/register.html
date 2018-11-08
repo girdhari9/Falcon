@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block header %}
+<title>New User - {{ websiteName }}</title>
+{% endblock %}
+
+{% block content %}
+<h2>NEW USER</h2>
+  <div class="formContainer">
+  <form action="{{ url_for('doRegister') }}" method=post>
+    Username:<input type=text name=username>
+    Password:<input type=password name=password>
+    Confirm Password:<input type=password name=confirmPassword>
+    Full Name:<input type=text name=fullname>
+    Email Id:<input type=email name=emailid>
+    Mobile No.:<input type=mobile name=mobile_no>
+    <input type=submit value=Register>
+  </form>
+  </div>
+<h5 color="RED">{{session.error}}</h5>
+  {% endblock %}
