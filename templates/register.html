@@ -9,7 +9,7 @@
   function checkUsername(){
     x = $('#username').val();
     $.ajax({
-      url:'/check',
+      url:'/check-username',
       method: 'POST',
       data: { x:x },
       success: function (result) {

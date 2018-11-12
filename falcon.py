@@ -113,6 +113,12 @@ def checkUsername(username):
     return True
   return False
 
+def checkUrl(posturl):
+  getUrl = g.db.execute('select posturl from posts where posturl= ?',(posturl,))
+  if not getUrl.fetchone():
+    return True
+  return False  
+
 @app.before_request
 def before_request():
   g.db = connect_db()
@@ -184,6 +190,9 @@ def archive():
 def publish():
   if session.get('logged_in'):
     if request.method == 'POST':
+      if not checkUrl(request.form['url']):
+        flash('Give different Content Link!')
+        return redirect(request.url)
       if request.form["contenttype"] == "post":
         g.db.execute('insert into posts (posttitle, posturl, postcontent, postauthor) values (?, ?, ?, ?)',
                      (request.form['title'], request.form['url'], request.form['content'], session['userid']))
@@ -287,11 +296,16 @@ def getPostList(userid):
   else:
     abort(404)
 
-@app.route('/check', methods=['POST'])
+@app.route('/check-username', methods=['POST'])
 def checkUser():
     if checkUsername(request.form['x']):
       return 'Username available!'
     return 'Username already exist!'
+
+@app.route('/check-url', methods=['POST'])
+def checkPostUrl():
+    if not checkUrl(request.form['x']):
+      return 'Give different Content Link!'
 
 @app.route('/register', methods=['GET', 'POST'])
 def doRegister():
@@ -300,7 +314,7 @@ def doRegister():
       if not checkUsername(request.form['username']):
         flash('Username already exist!')
         return redirect(request.url)
-        
+
   if session.get('logged_in'):
     return redirect(request.url_root)
   if request.method == 'POST':
