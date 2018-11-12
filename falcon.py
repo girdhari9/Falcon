@@ -87,6 +87,13 @@ def getAdmin(userid):
   adminProfile = [dict(userid=detail[0], username=detail[1], fullname=detail[3]) for detail in getDetail.fetchall()]
   return adminProfile
 
+def getPostAuthor(posturl):
+  getDetail = g.db.execute('select fullname from users where userid = (select postauthor from posts where posturl= ?)',(posturl,))
+  for x in getDetail.fetchall():
+    fullname = x[0]
+  user = [fullname]
+  return user
+
 def getCommnet(posturl):
   getDetail = g.db.execute('select * from comments where postid = (select postid from posts where posturl= ?)',(posturl,))
   comment = [dict(userid=detail[2], comment=detail[3], cmttime=detail[4]) for detail in getDetail.fetchall()]
@@ -139,7 +146,7 @@ def show_index():
 
 @app.route('/post/<posturl>')
 def show_post(posturl):
-  return render_template('post.html', post=single_post(posturl), comment=getCommnet(posturl),  pages=get_pages())
+  return render_template('post.html', post=single_post(posturl), user=getPostAuthor(posturl), comment=getCommnet(posturl),  pages=get_pages())
 
 @app.route('/post/<posturl>/edit')
 def postedit(posturl):
@@ -331,7 +338,7 @@ def doRegister():
       return redirect(request.url) #with message
   return render_template('register.html', pages=get_pages())
 
-@app.route('/submit.comment/<posturl>', methods=['GET', 'POST'])
+@app.route('/submit.comment/<posturl>', methods=['POST'])
 def doComment(posturl):
   postid = getPostid(posturl)
   if session.get('logged_in'):
@@ -341,9 +348,9 @@ def doComment(posturl):
   if request.method == 'POST':
     g.db.execute('insert into comments (postid, userid, comment) values (?, ?, ?)',(postid, userid, request.form['comment']))
     g.db.commit()
-    return redirect(request.url_root) #error
+    return str(userid)
   else:
-    return redirect(request.url_root) #with message
+    abort(404)
 
 @app.route('/logout')
 def logout():

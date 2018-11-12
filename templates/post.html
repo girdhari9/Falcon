@@ -9,6 +9,27 @@ if (sure == true) {
     window.location.assign("{{ url_for('postdelete', posturl=post[2]) }}");
 }}
 </script>
+
+<script type="text/javascript">
+  function extractComment(){
+    comment = $('#comment').val();
+    var content = "<p><b>Admin : </b>"+comment+"</p>";
+    var content2 = "<p><b>Anonymous : </b>"+comment+"</p>";
+    $.ajax({
+      url:'/submit.comment/{{ post[2] }}',
+      method: 'POST',
+      data: { comment:comment },
+      success: function (result) {
+        if (result=="0") {
+          $('#commetnDiv').append(content2);
+        }
+        else{
+          $('#commetnDiv').append(content);
+        }
+      }  
+    });
+}
+</script>
 {% endblock %}
 
 {% block content %}
@@ -18,7 +39,9 @@ if (sure == true) {
     <h2>{{ post[1] }}</h2>
   </a>
 
-  <div class="post-meta"><p><b><i class="fa fa-calendar"></i></b> {{ post[5] }}</p></div>
+  <div class="post-meta">
+    <p><b><i class="fa fa-calendar"></i></b> {{ post[5] }} - <b><i class="fa fa-user"></i> </b>{{ user[0] }}</p>
+  </div>
 
   <p>{{ post[3]|safe }}</p>
 
@@ -36,42 +59,27 @@ if (sure == true) {
 <div>
   <p><b>{{ comment|length }} Comments</b></p>
   <hr>
-  {% for data in comment %}
-  <p><b>{% if not data.userid|int == 0 %}
-          Admin
-        {% else %} 
-          Anonymous 
-        {% endif %}
-  :</b> {{data.comment}}</p>
-  {% else %}
-  <p>No Comment! Be the first to comment.</p>
-  {% endfor %}
+  <div id="commetnDiv">
+    {% for data in comment %}
+    <p><b>{% if not data.userid|int == 0 %}
+            Admin
+          {% else %} 
+            Anonymous 
+          {% endif %}
+    :</b> {{data.comment}}</p>
+    {% else %}
+    <p>No Comment! Be the first to comment.</p>
+    {% endfor %}
+  </div>
   <hr>
   <p>Add Comment:</p>
   <div class="formContainer">
-  <form action="{{ url_for('doComment', posturl=post[2]) }}" method=post>
+  <!-- <form> -->
     <input style="padding: 12px 20px;margin: 8px 0;display: inline-block;border: 1px solid #ccc;border-radius: 4px;box-sizing: border-box;" type=text id="comment" name="comment" placeholder="Start the discussion..."></input>
-    <input type=submit value="Add Comment">
-  </form>
+    <button onclick="extractComment()">Add Comment</button>
+  <!-- </form> -->
   </div>
   <hr>
+
 </div>
-<!-- <center>
-  <div id="disqus_thread"></div>
-  <script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = "{{ disqusName }}";
-
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-      var dsq = document.createElement('script');
-      dsq.type = 'text/javascript';
-      dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-</center> -->
-
 {% endblock %}
