@@ -12,5 +12,13 @@
 		<input type=submit value=Login>
 	</form>
   </div>
-
+  <div align="center">
+  {% with messages = get_flashed_messages() %}
+         {% if messages %}
+               {% for message in messages %}
+               <h5>{{ message }}</h5>
+               {% endfor %}
+         {% endif %}
+      {% endwith %}
+  </div>
 	{% endblock %}

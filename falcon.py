@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import sqlite3, os, datetime
-from flask import Flask, request, session, g, redirect, url_for, abort, render_template, current_app
+from flask import Flask, request, session, g, redirect, url_for, abort, render_template, current_app, flash
 from contextlib import closing
 from werkzeug.contrib.atom import AtomFeed
 from urlparse import urljoin
@@ -107,6 +107,12 @@ def getPostid(posturl):
   for postid in getDetail.fetchall():
     return postid[0]
 
+def checkUsername(username):
+  getUser = g.db.execute('select username from users where username= ?',(username,))
+  if not getUser.fetchone():
+    return True
+  return False
+
 @app.before_request
 def before_request():
   g.db = connect_db()
@@ -170,7 +176,8 @@ def archive():
   if session.get('logged_in'):
     userid = session['userid']
   else:
-    abort(404)
+    return render_template('archive.html', posts=get_posts(), pages=get_pages())
+
   return render_template('archive.html', posts=getPosts(userid), pages=get_pages())
 
 @app.route('/publish', methods=['GET', 'POST'])
@@ -233,14 +240,17 @@ def login():
   # username = request.form['username'].strip()
   if request.method == 'POST':
     getUser = g.db.execute('select * from users where username = ?', (request.form['username'],))
-    for user in getUser.fetchall():
-      userid, username, password, mobile_no  = user[0], user[1], user[2], user[3]
+    userData = getUser.fetchone()
+    if not userData:
+      flash('Invalid Username!')
+      return redirect(request.url)
+
+    userid, username, password, mobile_no  = userData[0], userData[1], userData[2], userData[3]
     userDetail = [userid, username, password, mobile_no] 
 
     if userDetail[2] != request.form['password']:
-      error = 'Invalid password'
-      session['error'] = error
-      return redirect(request.url_root) 
+      flash('Invalid Password!')
+      return redirect(request.url) 
     else:
       session['logged_in'] = True
       session['username'] = request.form['username']
@@ -277,8 +287,20 @@ def getPostList(userid):
   else:
     abort(404)
 
+@app.route('/check', methods=['POST'])
+def checkUser():
+    if checkUsername(request.form['x']):
+      return 'Username available!'
+    return 'Username already exist!'
+
 @app.route('/register', methods=['GET', 'POST'])
 def doRegister():
+  if request.method == 'POST':
+    if request.form['Register'] == 'User Register':
+      if not checkUsername(request.form['username']):
+        flash('Username already exist!')
+        return redirect(request.url)
+        
   if session.get('logged_in'):
     return redirect(request.url_root)
   if request.method == 'POST':
@@ -286,11 +308,13 @@ def doRegister():
       g.db.execute('insert into users (username, password, fullname, emailid, mobile_no) values (?, ?, ?, ?, ?)',
                    (request.form['username'], request.form['password'], request.form['fullname'], request.form['emailid'], request.form['mobile_no']))
       g.db.commit()
-      return redirect(request.url_root)
+      flash('You have registered successfully!')
+      return redirect(request.url)
     else:
       error = 'Invalid password'
       session['error'] = error
-      return redirect(request.url_root) #with message
+      flash('Password do not match!')
+      return redirect(request.url) #with message
   return render_template('register.html', pages=get_pages())
 
 @app.route('/submit.comment/<posturl>', methods=['GET', 'POST'])
@@ -303,7 +327,7 @@ def doComment(posturl):
   if request.method == 'POST':
     g.db.execute('insert into comments (postid, userid, comment) values (?, ?, ?)',(postid, userid, request.form['comment']))
     g.db.commit()
-    return redirect(request.url_root)
+    return redirect(request.url_root) #error
   else:
     return redirect(request.url_root) #with message
 

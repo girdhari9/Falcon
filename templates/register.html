@@ -4,17 +4,44 @@
 {% endblock %}
 
 {% block content %}
+
+<script type="text/javascript">
+  function checkUsername(){
+    x = $('#username').val();
+    $.ajax({
+      url:'/check',
+      method: 'POST',
+      data: { x:x },
+      success: function (result) {
+        alert(result);
+      }  
+    });
+}
+</script>
+
 <h2>NEW USER</h2>
   <div class="formContainer">
+    Username: <button style="width: 15%" onclick="checkUsername()" name="chk_av" id="chk_av">Check Availability</button>
   <form action="{{ url_for('doRegister') }}" method=post>
-    Username:<input type=text name=username>
-    Password:<input type=password name=password>
-    Confirm Password:<input type=password name=confirmPassword>
-    Full Name:<input type=text name=fullname>
-    Email Id:<input type=email name=emailid>
-    Mobile No.:<input type=mobile name=mobile_no>
-    <input type=submit value=Register>
+    <input type=text name=username id=username required>
+    Password: (Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters)
+    <input type=password name=password pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+    Confirm Password:
+    <input type=password name=confirmPassword pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+    Full Name:<input type=text name=fullname required>
+    Email Id:<input type=email name=emailid required>
+    Mobile No.:<input type=text pattern="[789][0-9]{9}" maxlength=10 name=mobile_no required>
+    <input type=submit name="Register" value="User Register">
   </form>
   </div>
-<h5 color="RED">{{session.error}}</h5>
+  <div align="center">
+  {% with messages = get_flashed_messages() %}
+         {% if messages %}
+               {% for message in messages %}
+               <h5>{{ message }}</h5>
+               {% endfor %}
+         {% endif %}
+      {% endwith %}
+  </div>
   {% endblock %}
+
