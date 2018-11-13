@@ -159,6 +159,8 @@ def postdelete(posturl):
   if session.get('logged_in'):
     g.db.execute('delete from posts where posturl = ?', (posturl,))
     g.db.commit()
+    g.db.execute('delete from comments where postid = (select postid from posts where posturl = ?)', (posturl,))
+    g.db.commit()
     return render_template('index.html', posts=get_posts(), pages=get_pages())
   else:
     abort(404)

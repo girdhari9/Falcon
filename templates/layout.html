@@ -15,8 +15,8 @@
 </head>
 <body>
   <nav>
-    <a href="{{ websiteUrl }}"><h1>{{ websiteName }}</h1></a>
-    <dev class="site-desc"><p>{{ websiteDesc }}</p></dev>
+    <a href="{{ websiteUrl }}"><img src = "/static/teamlogo2.png" alt="FalconLogo"></img></a>
+    <dev class="site-desc"><p><i>{{ websiteDesc }}</i></p></dev>
     <ul>
       {% for a in pages %}
       <li><a href="{{ websiteUrl }}/page/{{a.pageurl}}"> {{ a.pagetitle }}</a></li>
