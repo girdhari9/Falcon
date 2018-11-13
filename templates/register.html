@@ -13,35 +13,68 @@
       method: 'POST',
       data: { x:x },
       success: function (result) {
-        alert(result);
+        var inputVal = document.getElementById("username").value;
+        if (result == '1') {
+            $("#username").attr("disabled", false).css("border","2px solid green");
+        }
+        else{
+            $("#username").attr("disabled", false).css("border","2px solid red");
+        }
       }  
     });
 }
 </script>
 
-<h2>NEW USER</h2>
-  <div class="formContainer">
-    Username: <button style="width: 15%" onclick="checkUsername()" name="chk_av" id="chk_av">Check Availability</button>
-  <form action="{{ url_for('doRegister') }}" method=post>
-    <input type=text name=username id=username required>
-    Password: (Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters)
-    <input type=password name=password pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
-    Confirm Password:
-    <input type=password name=confirmPassword pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
-    Full Name:<input type=text name=fullname required>
-    Email Id:<input type=email name=emailid required>
-    Mobile No.:<input type=text pattern="[789][0-9]{9}" maxlength=10 name=mobile_no required>
-    <input type=submit name="Register" value="User Register">
-  </form>
+<form id="authForm" action="{{ url_for('doRegister') }}" method=post>
+  <div class="container">
+    <h1>REGISTRATION</h1>
+    <p><font color="red">*</font>Please fill in this form to create an account.</p>
+    <hr>
+    <div class="input-container">
+      <i class="fa fa-user icon"></i>
+      <input class="input-field" type=text name="username" onchange="checkUsername()" placeholder="Enter Username" id="username" required>
+    </div>
+    <div class="input-container">
+      <i class="fa fa-info icon"></i>
+      <input class="input-field" type=text placeholder="Enter Full Name" name="fullname" required>
+    </div>
+    <div class="input-container">
+      <i class="fa fa-envelope icon"></i>
+      <input class="input-field" type=email placeholder="Enter Email" name="emailid" required>
+    </div>
+
+    <div class="input-container">
+      <i class="fa fa-mobile icon"></i>
+      <input class="input-field" type=text placeholder="Enter Mobile Number" pattern="[789][0-9]{9}" maxlength=10 name="mobile_no" required>
+    </div>
+
+    <div class="input-container" data-tip="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+      <i class="fa fa-key icon"></i>
+      <input class="input-field" type="password" placeholder="Enter Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="password">
+    </div>
+
+    <div class="input-container" data-tip="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+      <i class="fa fa-key icon"></i>
+      <input class="input-field" type="password" placeholder="Repeat Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="confirmPassword">
+    </div>
+    <hr>
+    <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+
+    <button type="submit" class="btn">Register</button>
   </div>
-  <div align="center">
-  {% with messages = get_flashed_messages() %}
-         {% if messages %}
-               {% for message in messages %}
-               <h5>{{ message }}</h5>
-               {% endfor %}
-         {% endif %}
-      {% endwith %}
+  
+  <div class="container signin">
+    <p>Already have an account? <a href="{{ url_for('login') }}">Sign in</a>.</p>
   </div>
-  {% endblock %}
+</form> 
+<div align="center">
+{% with messages = get_flashed_messages() %}
+       {% if messages %}
+             {% for message in messages %}
+             <h5>{{ message }}</h5>
+             {% endfor %}
+       {% endif %}
+    {% endwith %}
+</div>
+{% endblock %}
 

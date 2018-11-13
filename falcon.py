@@ -15,7 +15,6 @@ def variables_def():
         websiteName=unicode(app.config["WEBSITENAME"], "utf-8"),
         websiteDesc=unicode(app.config["WEBSITEDESC"], "utf-8"),
         websiteUrl=request.url_root[:-1],
-        disqusName=app.config["DISQUSNAME"],
         currentUrl=request.path,
         )
 
@@ -84,7 +83,7 @@ def getPostsWithAuthor(userid):
 
 def getAdmin(userid):
   getDetail = g.db.execute('select * from users where not userid = ?',(userid,))
-  adminProfile = [dict(userid=detail[0], username=detail[1], fullname=detail[3]) for detail in getDetail.fetchall()]
+  adminProfile = [dict(userid=detail[0], username=detail[1], fullname=detail[3], emailid=detail[4], mobile_no=detail[5]) for detail in getDetail.fetchall()]
   return adminProfile
 
 def getPostAuthor(posturl):
@@ -285,7 +284,7 @@ def getProfile():
   else:
     abort(404)
 
-@app.route('/adminlist')
+@app.route('/authorlist')
 def getAdminList():
   if session.get('userid'):
     userid = session['userid']
@@ -306,8 +305,8 @@ def getPostList(userid):
 @app.route('/check-username', methods=['POST'])
 def checkUser():
     if checkUsername(request.form['x']):
-      return 'Username available!'
-    return 'Username already exist!'
+      return '1'
+    return '0'
 
 @app.route('/check-url', methods=['POST'])
 def checkPostUrl():
@@ -317,10 +316,9 @@ def checkPostUrl():
 @app.route('/register', methods=['GET', 'POST'])
 def doRegister():
   if request.method == 'POST':
-    if request.form['Register'] == 'User Register':
-      if not checkUsername(request.form['username']):
-        flash('Username already exist!')
-        return redirect(request.url)
+    if not checkUsername(request.form['username']):
+      flash('Username already exist!')
+      return redirect(request.url)
 
   if session.get('logged_in'):
     return redirect(request.url_root)
@@ -335,7 +333,7 @@ def doRegister():
       error = 'Invalid password'
       session['error'] = error
       flash('Password do not match!')
-      return redirect(request.url) #with message
+      return redirect(request.url)
   return render_template('register.html', pages=get_pages())
 
 @app.route('/submit.comment/<posturl>', methods=['POST'])
@@ -346,6 +344,7 @@ def doComment(posturl):
   else:
     userid = 0
   if request.method == 'POST':
+
     g.db.execute('insert into comments (postid, userid, comment) values (?, ?, ?)',(postid, userid, request.form['comment']))
     g.db.commit()
     return str(userid)

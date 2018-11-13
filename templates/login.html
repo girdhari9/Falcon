@@ -6,10 +6,17 @@
 {% block content %}
 <h2>Login</h2>
 	<div class="formContainer">
-	<form action="{{ url_for('login') }}" method=post>
-		Username:<input type=text name=username>
-		Password:<input type=password name=password>
-		<input type=submit value=Login>
+	<form id="authForm" action="{{ url_for('login') }}" method=post>
+    <div class="input-container">
+      <i class="fa fa-user icon"></i>
+		<input class="input-field" type=text placeholder="Enter Username" name=username>
+    </div>
+    <div class="input-container">
+      <i class="fa fa-key icon"></i>
+    <input class="input-field" type=password placeholder="Enter Password" name=password>
+    </div>
+		
+		<button type="submit" class="btn">Login</button>
 	</form>
   </div>
   <div align="center">

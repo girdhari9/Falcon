@@ -12,7 +12,8 @@ if (sure == true) {
 
 <script type="text/javascript">
   function extractComment(){
-    comment = $('#comment').val();
+    var comment = $('#comment').val();
+    comment = comment.replace(/(<([^>]+)>)/ig,"")
     var content = "<p><b>Admin : </b>"+comment+"</p>";
     var content2 = "<p><b>Anonymous : </b>"+comment+"</p>";
     $.ajax({
@@ -30,6 +31,7 @@ if (sure == true) {
     });
 }
 </script>
+
 {% endblock %}
 
 {% block content %}
@@ -51,7 +53,7 @@ if (sure == true) {
 <div class="post-footer">
   <p>
      {% if session.logged_in and session['userid'] == post[4]|int %}
-       <a class="button" href="{{ url_for('postedit', posturl=post[2]) }}"><i class="fa fa-edit"></i> Edit</a></li>
+       <a class="button" href="{{ url_for('postedit', posturl=post[2]) }}"><i class="fa fa-edit"></i> Edit</a>
         -
         <a class="button" onclick="checkIfSure()"><i class="fa fa-times"></i> Delete</a>
      {% endif %}</p>
@@ -74,12 +76,9 @@ if (sure == true) {
   <hr>
   <p>Add Comment:</p>
   <div class="formContainer">
-  <!-- <form> -->
-    <input style="padding: 12px 20px;margin: 8px 0;display: inline-block;border: 1px solid #ccc;border-radius: 4px;box-sizing: border-box;" type=text id="comment" name="comment" placeholder="Start the discussion..."></input>
-    <button onclick="extractComment()">Add Comment</button>
-  <!-- </form> -->
+    <input type=text id="comment" name="comment" placeholder="Start the discussion...">
+    <input type=submit value="Add Comment" onclick="extractComment()">
   </div>
   <hr>
-
 </div>
 {% endblock %}
