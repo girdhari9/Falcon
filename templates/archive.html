@@ -1,15 +1,31 @@
 {% extends "layout.html" %} {% block header %}
 <title>Archive - {{ websiteName }}</title>
 {% endblock %} {% block content %}
-  <ul class="archive">
-	{% for x in posts %}
-   <li><a href="/post/{{x.posturl}}">{{ x.posttitle}} </a> - {{ x.postdate[0:10] }} </li>
-
-
+<div class="card">
+	{% if session.logged_in %}
+	  <h2><i class="fa fa-user"></i> {{ profile[3]}}</h2>
+	  <p class="title"><i class="fa fa-envelope"></i> {{ profile[4] }}</p>
+	  <p><i class="fa fa-mobile"></i> {{ profile[5] }}</p>
+	  <button class="btn"><a class="btn" href="{{ url_for('editPro') }}">Edit Profile</a></button>
+ 	{% endif %}
+</div>
+<div class="container">
+	<ul class="responsive-table">
+	  <li class="table-header" style="color: white">
+	    <div class="col col-2">Title</div>
+	    <div class="col col-3">Modified Date</div>
+	    <div class="col col-1">Blogs</div>
+	  </li>
+	  {% for x in posts %}
+	  <li class="table-row">
+	    <div class="col col-2" data-label="Blog-Title">{{ x.posttitle}}</div>
+	    <div class="col col-3" data-label="Last-Modified-Date">{{ x.postdate[0:10] }}</div>
+	    <div class="col col-1" data-label="Blog"><a href="/post/{{x.posturl}}">View</a></div>
+	  </li>
 	{% else %}
-		<h3>No posts published yet.</h3>
-		<p>This website is still new, wait for content to come.</p>
+	<h3>No posts published yet.</h3>
+	<p>This website is still new, wait for content to come.</p>
 	{% endfor %}
-</ul>
-
+	</ul>
+</div>
 {% endblock %}

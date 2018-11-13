@@ -22,10 +22,14 @@ if (sure == true) {
       data: { comment:comment },
       success: function (result) {
         if (result=="0") {
+          $('#noComment').empty();
           $('#commetnDiv').append(content2);
+          document.getElementById("comment").value = '';
         }
         else{
+          $('#noComment').empty();
           $('#commetnDiv').append(content);
+          document.getElementById("comment").value = '';
         }
       }  
     });
@@ -70,7 +74,7 @@ if (sure == true) {
           {% endif %}
     :</b> {{data.comment}}</p>
     {% else %}
-    <p>No Comment! Be the first to comment.</p>
+    <p id="noComment">No Comment! Be the first to comment.</p>
     {% endfor %}
   </div>
   <hr>

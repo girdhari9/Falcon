@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block header %}
+<title>New User - {{ websiteName }}</title>
+{% endblock %}
+
+{% block content %}
+<form id="authForm" action="{{ url_for('ProfileEdit') }}" method=post>
+  <div class="container">
+    <h1>PROFILE EDIT</h1>
+    <div class="input-container">
+      <i class="fa fa-info icon"></i>
+      <input class="input-field" type=text value="{{ profile[3] }}" placeholder="Enter Full Name" name="fullname" required>
+    </div>
+    <div class="input-container">
+      <i class="fa fa-envelope icon"></i>
+      <input class="input-field" type=email value="{{ profile[4] }}" placeholder="Enter Email" name="emailid" required>
+    </div>
+
+    <div class="input-container">
+      <i class="fa fa-mobile icon"></i>
+      <input class="input-field" type=text value="{{ profile[5] }}" placeholder="Enter Mobile Number" pattern="[789][0-9]{9}" maxlength=10 name="mobile_no" required>
+    </div>
+    <button type="submit" class="btn">SAVE PROFILE</button>
+  </div>
+</form> 
+{% endblock %}
+

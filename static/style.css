@@ -294,15 +294,6 @@ tr:hover {background-color:#f5f5f5;}
   padding-right: 10px;
 }
 
-h2 {
-  font-size: 26px;
-  margin: 20px 0;
-  text-align: center;
-}
-h2 small {
-  font-size: 0.5em;
-}
-
 .responsive-table li {
   border-radius: 3px;
   padding: 25px 30px;
@@ -353,4 +344,17 @@ h2 small {
     flex-basis: 50%;
     text-align: right;
   }
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.title {
+  color: grey;
+  font-size: 18px;
 }

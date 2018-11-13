@@ -83,7 +83,8 @@ def getPostsWithAuthor(userid):
 
 def getAdmin(userid):
   getDetail = g.db.execute('select * from users where not userid = ?',(userid,))
-  adminProfile = [dict(userid=detail[0], username=detail[1], fullname=detail[3], emailid=detail[4], mobile_no=detail[5]) for detail in getDetail.fetchall()]
+  adminProfile = [dict(userid=detail[0], username=detail[1], password=detail[2], fullname=detail[3], emailid=detail[4], mobile_no=detail[5]) for detail in getDetail.fetchall()]
+  print adminProfile 
   return adminProfile
 
 def getPostAuthor(posturl):
@@ -125,6 +126,16 @@ def checkUrl(posturl):
     return True
   return False  
 
+def checkAuthorUrl(posturl):
+  getId = g.db.execute('select postauthor from posts where posturl= ?',(posturl,))
+  userid = getId.fetchone()
+  if session.get('logged_in'):
+    if userid[0] == str(session['userid']):
+      return True
+    return False 
+  else:
+    abort(404) 
+
 @app.before_request
 def before_request():
   g.db = connect_db()
@@ -149,17 +160,19 @@ def show_post(posturl):
 
 @app.route('/post/<posturl>/edit')
 def postedit(posturl):
-  if session.get('logged_in'):
-    return render_template('edit.html', post = editpost(posturl), contentType = "post", pages=get_pages())
-  else:
+  if not checkAuthorUrl(posturl):
     abort(404)
+  else:
+    if session.get('logged_in'):
+      return render_template('edit.html', post = editpost(posturl), contentType = "post", pages=get_pages())
+    else:
+      abort(404)
 
 @app.route('/post/<posturl>/delete')
 def postdelete(posturl):
   if session.get('logged_in'):
-    g.db.execute('delete from posts where posturl = ?', (posturl,))
-    g.db.commit()
     g.db.execute('delete from comments where postid = (select postid from posts where posturl = ?)', (posturl,))
+    g.db.execute('delete from posts where posturl = ?', (posturl,))
     g.db.commit()
     return render_template('index.html', posts=get_posts(), pages=get_pages())
   else:
@@ -192,7 +205,7 @@ def archive():
   else:
     return render_template('archive.html', posts=get_posts(), pages=get_pages())
 
-  return render_template('archive.html', posts=getPosts(userid), pages=get_pages())
+  return render_template('archive.html', posts=getPosts(userid), profile=getUserDetail(userid), pages=get_pages())
 
 @app.route('/publish', methods=['GET', 'POST'])
 def publish():
@@ -337,6 +350,24 @@ def doRegister():
       flash('Password do not match!')
       return redirect(request.url)
   return render_template('register.html', pages=get_pages())
+
+@app.route('/profile/edit', methods=['GET', 'POST'])
+def editPro():
+  if not session.get('logged_in'):
+    abort(404)
+  return render_template('editprofile.html', profile=getUserDetail(session['userid']), pages=get_pages())
+
+@app.route('/profile/edit/userdetail', methods=['POST'])
+def ProfileEdit():
+  if not session.get('logged_in'):
+    abort(404)
+  userid = session['userid']
+  if request.method == 'POST':
+    g.db.execute('UPDATE users SET fullname = ?, emailid = ?, mobile_no = ? WHERE userid = ?', (request.form['fullname'], request.form['emailid'], request.form['mobile_no'], userid))
+    g.db.commit()
+    return redirect(request.url_root)
+  else:
+      abort(404)
 
 @app.route('/submit.comment/<posturl>', methods=['POST'])
 def doComment(posturl):
