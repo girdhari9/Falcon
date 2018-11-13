@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 WEBSITENAME = "Falcon11"
-WEBSITEDESC = "Free and open source software user & developer."
+WEBSITEDESC = "\"With the new day comes new strength and new thoughts, go blogging\""
 DATABASE = os.path.join(os.getcwd(), "falcon11.db")
 DEBUG = True
 SECRET_KEY = os.urandom(20)
