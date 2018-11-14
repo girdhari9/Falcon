@@ -1,51 +1,54 @@
-# Zayzafoun
+# Team Falcon11
 
-A personal blog script written in Python & Flask. Focuses on simplicity and getting the job done. Still in the early testing stages. Your contributions are more than welcome.
+Designed a fully working blogger website having features of creating, publishing and viewing blogs and comments etc with specific functionalities mentioned in the problem statement provided.
 
-Please note that this script focuses on being minimal. If you are about to submit a big pull request, open an issue first.
+## Team Members:
+
+1) Giridhari Lal Gupta 		2018201019
+2) Monu Tayal			2018201042
+3) Danish Mukthar		2018201016
+4) Shubham Pokhriyal		2018201080
 
 ## Features:
 
-* Very simple & clean.
-* Create/Edit/Delete Posts.
-* Create/Edit/Delete Pages.
-* Ability to set a special URL for each content.
-* Simple interface for everything essintial.
-* 100% Responsive design on all pages.
-* Login ability for one admin user.
-* Comments are served using Disqus.
-* Automatic RSS feed for posts.
-* Archive page for all your posts.
-* Free and Open Source!
+###Specific to Authors(Admins):
 
-Built using Python, Flask, FontAwesome and TinyMCE. Thanks for Lato font which is released under FDL 1.2. Zayzafoun script is released under the GPL 3 license.
+* Multiple Authors can register.
+* A author can post many blogs.
+* The auther can edit and delete his/her blogs.
+* Author can style his blogs and add images.
+* Author can comment.
+* Profile option for looking at all profiles and also editing own profile.
+* All Users option to look at list of all authors and their contact information.
+* Logout option to go back to user mode.
+
+###Specific to Users:
+
+* Users can browse blogs and comment.
+* New User option to register for author.
+* Login option to login into author profile.
+* Achieve option for looking all blogs with their dates.
+
+Built using Python, Flask, sqlite3, FontAwesome and TinyMCE.
 
 ## Screenshots:
 
-![Screenshot 0](http://i.imgur.com/40xh6cq.png)
+![Screenshot 0](https://github.com/girdhari9/Falcon/blob/master/static/Screenshot/screencapture-0-0-0-0-5000-2018-11-14-16_35_03.png)
 
-![Screenshot 1](http://i.imgur.com/xeyp2R7.png)
+![Screenshot 1](https://github.com/girdhari9/Falcon/blob/master/static/Screenshot/screencapture-0-0-0-0-5000-post-A-Message-from-Jean-Paul-Sartre-Turn-Off-Your-Goddamn-Read-Receipts-2018-11-14-16_38_04.png)
 
-![Screenshot 2](http://i.imgur.com/0EtEZQK.png)
+![Screenshot 2](https://github.com/girdhari9/Falcon/blob/master/static/Screenshot/screencapture-0-0-0-0-5000-archive-2018-11-14-16_35_47.png)
 
-## Demo
+![Screenshot 3](https://github.com/girdhari9/Falcon/blob/master/static/Screenshot/screencapture-0-0-0-0-5000-register-2018-11-14-16_38_23.png)
 
-Visit my personal blog: http://blog.mhsabbagh.com/
+![Screenshot 4](https://github.com/girdhari9/Falcon/blob/master/static/Screenshot/screencapture-0-0-0-0-5000-publish-2018-11-14-16_39_27.png)
 
-## Installation:
+## End User Documentation:
 
-Make sure you have Flask instelled:
+Make sure you have Flask installed:
 
     sudo pip install flask
 
 Download all the files and extract them to a new folder, then run:
 
-    ./zayzafoun.py
-
-For deployment with apache2, you may see this: http://flask.pocoo.org/docs/0.10/deploying/mod_wsgi/ For deployment with nginx and others: http://flask.pocoo.org/docs/0.10/deploying/uwsgi/
-
-To be honest this is not the normal coding style I do. but if I see a group of people interested in this script, maybe I continue working on improving it.
-
-## Bugs and Requests:
-
-You can open new issues reports and feature requestes on the GitHub page.
+    ./falcon.py
