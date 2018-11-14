@@ -55,8 +55,8 @@ def editpost(posturl):
   if session.get('logged_in'):
     getPost = g.db.execute('select * from posts where posturl = ?', (posturl,))
     for n in getPost.fetchall():
-      posttitle, posturl, postcontent = n[1], n[2], n[3]
-    post = [posttitle, posturl, postcontent]
+      posttitle, posturl, postcontent, posttheme = n[1], n[2], n[3], n[5]
+    post = [posttitle, posturl, postcontent, posttheme]
     return post
   else:
     abort(404)
@@ -152,6 +152,9 @@ def page_not_found(e):
 
 @app.route('/')
 def show_index():
+  # user = "<script>alert(sdklhfal)</script>"
+  # username = user.subn(r'<(script).*?</\1>(?s)', '', 0, data)[0]
+  # print username
   return render_template('index.html', posts=get_posts(), pages=get_pages())
 
 @app.route('/post/<posturl>')
@@ -250,7 +253,7 @@ def doEdit():
   if session.get('logged_in'):
     if request.method == 'POST':
       if request.form["contenttype"] == "post":
-        g.db.execute('UPDATE posts SET posttitle = ?, postcontent = ? WHERE posturl = ?', (request.form['title'], request.form['content'], request.form['url']))
+        g.db.execute('UPDATE posts SET posttitle = ?, postcontent = ?, posttheme = ? WHERE posturl = ?', (request.form['title'], request.form['content'], request.form['themeval'], request.form['url']))
         g.db.commit()
         return redirect(request.url_root)
       else:
@@ -267,7 +270,8 @@ def doEdit():
 def login():
   if session.get('logged_in'):
     return redirect(request.url_root)
-  # username = request.form['username'].strip()
+  # username = request.form['username'].subn(r'<(script).*?</\1>(?s)', '', 0, data)[0]
+  # print username
   if request.method == 'POST':
     getUser = g.db.execute('select * from users where username = ?', (request.form['username'],))
     userData = getUser.fetchone()

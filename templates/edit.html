@@ -21,21 +21,46 @@
 {% if session.logged_in %}
 <div class="formContainer">
   <form action="{{ url_for('doEdit') }}" method=post onSubmit="javascript: RemoveDisabled();">
-  Content Type:
-  <select name="contenttype" disabled="disabled" id="disabledtype" />
-    {% if contentType == "post" %}
-    <option value="post">Post</option>
-    {% else %}
-    <option value="page">Page</option>
-    {% endif %}
-  </select>
+  <div class="styled-select slate">
+    <select name="themeval">
+      {% if post[3] == 0 %}
+      <option selected value="0">Default</option>
+      <option value="1">Theme 1</option>
+      <option value="2">Theme 2</option>
+      <option value="3">Theme 3</option>
+      {% elif post[3] == 1 %}
+      <option value="0">Default</option>
+      <option selected value="1">Theme 1</option>
+      <option value="2">Theme 2</option>
+      <option value="3">Theme 3</option>
+      {% elif post[3] == 2 %}
+      <option value="0">Default</option>
+      <option value="1">Theme 1</option>
+      <option selected value="2">Theme 2</option>
+      <option value="3">Theme 3</option>
+      {% else %}
+      <option value="0">Default</option>
+      <option value="1">Theme 1</option>
+      <option value="2">Theme 2</option>
+      <option selected value="3">Theme 3</option>
+      {% endif %}
+    </select>
+  </div>
   </br>
-  Content Title:
-  <input type="text" name="title" value="{{ post[0] }}" />
-   Content Link:
-  <input type="text" name="url" value="{{ post[1] }}" disabled="disabled" id="disabledurl" />
-  <textarea name="content" id="textarea" rows=10 cols=100>{{ post[2] }}</textarea>
-  <input type=submit value="Save Edit" width=100>
+  <div class="styled-select slate">
+    <select name="contenttype" disabled="disabled" id="disabledtype" />
+      {% if contentType == "post" %}
+      <option value="post">Publish Post</option>
+      {% else %}
+      <option value="page">Publish Page</option>
+      {% endif %}
+    </select>
+  </div>
+  <br>
+  <input type="text" id="comment" name="title" value="{{ post[0] }}" placeholder="Content Title: Some beautiful title here" required> 
+  <input type="text" id="comment" name="url" value="{{ post[1] }}" placeholder="Content Link: insert-it-like-this-way-only" required>
+  <textarea id="textarea" name="content" rows=10 cols=100>{{ post[2] }}</textarea>
+  <button type=submit class="btn">Save Edit</button> 
   </form>
 </div>
 {% endif %} {% endblock %}
