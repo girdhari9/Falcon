@@ -11,7 +11,7 @@ Designed a fully working blogger website having features of creating, publishing
 
 ## Features:
 
-###Specific to Authors(Admins):
+### Specific to Authors(Admins):
 
 * Multiple Authors can register.
 * A author can post many blogs.
@@ -22,7 +22,7 @@ Designed a fully working blogger website having features of creating, publishing
 * All Users option to look at list of all authors and their contact information.
 * Logout option to go back to user mode.
 
-###Specific to Users:
+### Specific to Users:
 
 * Users can browse blogs and comment.
 * New User option to register for author.
@@ -45,10 +45,24 @@ Built using Python, Flask, sqlite3, FontAwesome and TinyMCE.
 
 ## End User Documentation:
 
-Make sure you have Flask installed:
+Install everything listed in requirements.txt using
 
-    sudo pip install flask
+	pip install -r requirements.txt
+or do it manually
 
-Download all the files and extract them to a new folder, then run:
+Clone the repository on your local system
 
-    ./falcon.py
+	git clone https://github.com/girdhari9/Falcon.git
+
+Open the directory
+
+	cd Falcon
+
+Generate the sqlite database by running
+
+	sqlite3 falcon.db < schema.sql
+if falcon.db not already present
+
+setup a virtual environment
+
+	python2 falcon.py
