@@ -215,7 +215,7 @@ def publish():
       if not checkUrl(request.form['url']):
         flash('Give different Content Link!')
         return redirect(request.url)
-      if "post" == "post":
+      if request.form['contenttype'] == "post":
         g.db.execute('insert into posts (posttitle, posturl, postcontent, postauthor) values (?, ?, ?, ?)',
                      (request.form['title'], request.form['url'], request.form['content'], session['userid']))
         g.db.commit()

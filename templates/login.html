@@ -5,20 +5,22 @@
 
 {% block content %}
 <h2>Login</h2>
-	<div class="formContainer">
 	<form id="authForm" action="{{ url_for('login') }}" method=post>
-    <div class="input-container">
-      <i class="fa fa-user icon"></i>
-		<input class="input-field" type=text placeholder="Enter Username" name=username>
+    <div class="container">
+      <div class="input-container">
+        <i class="fa fa-user icon"></i>
+      <input class="input-field" type=text placeholder="Enter Username" name=username>
+      </div>
+      <div class="input-container">
+        <i class="fa fa-key icon"></i>
+      <input class="input-field" type=password placeholder="Enter Password" name=password>
+      </div>
+      <button type="submit" class="btn">Login</button>
     </div>
-    <div class="input-container">
-      <i class="fa fa-key icon"></i>
-    <input class="input-field" type=password placeholder="Enter Password" name=password>
+    <div class="container signin">
+      <p>New User? <a href="{{ url_for('doRegister') }}">Sign up</a>.</p>
     </div>
-		
-		<button type="submit" class="btn">Login</button>
 	</form>
-  </div>
   <div align="center">
   {% with messages = get_flashed_messages() %}
          {% if messages %}
