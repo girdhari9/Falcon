@@ -394,8 +394,26 @@ tr:hover {background-color:#f5f5f5;}
 
 .new-white,
 .new-hover-white:hover {
-  color: #000!important;
-  background-color: #fff!important
+  color: #000!important; /* Title text color #542602 #542602 */
+  background-color: #FFF!important /* Back color #F77B89 #A1A5F3 #FBBA92 */
+}
+
+.new-light-red,
+.new-hover-light-red:hover {
+  color: #000!important; /* Title text color #542602 #542602 */
+  background-color: #F77B89!important /* Back color #F77B89 #A1A5F3 #FBBA92 */
+}
+
+.new-orange,
+.new-hover-orange:hover {
+  color: #542602!important; /* Title text color #542602 #542602 */
+  background-color: #FBBA92!important /* Back color #F77B89 #A1A5F3 #FBBA92 */
+}
+
+.new-blue,
+.new-hover-blue:hover {
+  color: #542602!important; /* Title text color #542602 #542602 */
+  background-color: #A1A5F3!important /* Back color #F77B89 #A1A5F3 #FBBA92 */
 }
 
 .new-container,

@@ -35,21 +35,20 @@ def get_pages():
 def get_posts():
   posts = ""
   fetch_posts = g.db.execute('select users.fullname, posts.* from posts left join users on users.userid = posts.postauthor order by postid desc')
-  # fetch_posts = g.db.execute('select * from posts order by postid desc')
-  posts = [dict(authorname=x[0], postid=x[1], posttitle=x[2], posturl=x[3], postcontent=x[4], postauthor=x[5], postdate=x[6]) for x in fetch_posts.fetchall()]
+  posts = [dict(authorname=x[0], postid=x[1], posttitle=x[2], posturl=x[3], postcontent=x[4], postauthor=x[5], posttheme=x[6], postdate=x[7]) for x in fetch_posts.fetchall()]
   return posts
 
 def getPosts(userid):
   posts = ""
   fetch_posts = g.db.execute('select * from posts where postauthor = ? order by postid desc',(userid,))
-  posts = [dict(postid=x[0], posttitle=x[1], posturl=x[2], postcontent=x[3], postauthor=x[4], postdate=x[5]) for x in fetch_posts.fetchall()]
+  posts = [dict(postid=x[0], posttitle=x[1], posturl=x[2], postcontent=x[3], postauthor=x[4], postdate=x[6]) for x in fetch_posts.fetchall()]
   return posts
 
 def single_post(posturl):
   showingpost = g.db.execute('select * from posts where posturl = ?', (posturl,))
   for x in showingpost.fetchall():
-    postid, posttitle, posturl, postcontent, postauthor, postdate = x[0], x[1], x[2], x[3], x[4], x[5]
-  post = [postid, posttitle, posturl, postcontent, postauthor, postdate]
+    postid, posttitle, posturl, postcontent, postauthor, posttheme, postdate = x[0], x[1], x[2], x[3], x[4], x[5], x[6]
+  post = [postid, posttitle, posturl, postcontent, postauthor, posttheme, postdate]
   return post
 
 def editpost(posturl):
@@ -78,7 +77,7 @@ def getUserDetail(userid):
 
 def getPostsWithAuthor(userid):
   getDetail = g.db.execute('select * from posts where postauthor= ? order by postdate',(userid,))
-  adminPost = [dict(posturl=detail[2], posttitle=detail[1], postdate=detail[5]) for detail in getDetail.fetchall()]
+  adminPost = [dict(posturl=detail[2], posttitle=detail[1], postdate=detail[6]) for detail in getDetail.fetchall()]
   print(adminPost)
   return adminPost
 
@@ -216,8 +215,8 @@ def publish():
         flash('Give different Content Link!')
         return redirect(request.url)
       if request.form['contenttype'] == "post":
-        g.db.execute('insert into posts (posttitle, posturl, postcontent, postauthor) values (?, ?, ?, ?)',
-                     (request.form['title'], request.form['url'], request.form['content'], session['userid']))
+        g.db.execute('insert into posts (posttitle, posturl, postcontent, postauthor, posttheme) values (?, ?, ?, ?, ?)',
+                     (request.form['title'], request.form['url'], request.form['content'], session['userid'], request.form['themeval']))
         g.db.commit()
         return redirect(request.url_root)
       else:

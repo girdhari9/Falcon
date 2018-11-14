@@ -42,10 +42,18 @@ if (sure == true) {
 <div class="new-content" style="max-width:1400px">
     <div class="new-row">
       <div class="new-col l12 s12">
+        {% if post[5] == 1 %}
+        <div class="new-card-4 new-margin new-blue">
+        {% elif post[5]== 2 %}
+        <div class="new-card-4 new-margin new-light-red">
+        {% elif post[5]== 3 %}
+        <div class="new-card-4 new-margin new-orange">
+        {% else %}
         <div class="new-card-4 new-margin new-white">
+        {% endif %}
             <div class="new-container">
               <h3 align="center"><b>{{ post[1] }}</b></h3>
-              <h5 align="center"><b><i class="fa fa-user"></i> </b>{{ user[0] }} - <span class="new-opacity"><b><i class="fa fa-calendar"></i></b> {{ post[5] }}</span></h5>
+              <h5 align="center"><b><i class="fa fa-user"></i> </b>{{ user[0] }} - <span class="new-opacity"><b><i class="fa fa-calendar"></i></b> {{ post[6] }}</span></h5>
             </div>
             <div class="new-container">
               <p>{{ post[3]|safe }}</p>

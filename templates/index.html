@@ -16,7 +16,15 @@
 	<div class="new-content" style="max-width:1400px">
 		<div class="new-row">
 			<div class="new-col l12 s12">
-				<div class="new-card-4 new-margin new-white">
+				{% if x.posttheme == 1 %}
+		        <div class="new-card-4 new-margin new-blue">
+		        {% elif x.posttheme== 2 %}
+		        <div class="new-card-4 new-margin new-light-red">
+		        {% elif x.posttheme== 3 %}
+		        <div class="new-card-4 new-margin new-orange">
+		        {% else %}
+		        <div class="new-card-4 new-margin new-white">
+		        {% endif %}
 				    <div class="new-container">
 				      <h3 align="center"><b>{{ x.posttitle }}</b></h3>
 				      <h5 align="center"><i class="fa fa-user"></i> {{ x.authorname }} - <span class="new-opacity"><i class="fa fa-calendar"></i> {{ x.postdate }}</span></h5>

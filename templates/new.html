@@ -13,13 +13,21 @@
 <div class="formContainer">
   <form action="{{ url_for('publish') }}" method=post>
   <div class="styled-select slate">
+    <select name="themeval">
+      <option value="0">Default</option>
+      <option value="1">Theme 1</option>
+      <option value="2">Theme 2</option>
+      <option value="3">Theme 3</option>
+    </select>
+  </div>
+  </br>
+  <div class="styled-select slate">
     <select name="contenttype">
-      <option>Select Content Type</option>
       <option value="post">Publish Post</option>
       <option value="page">Publish Page</option>
     </select>
   </div>
-  </br>
+  <br>
   <input type="text" id="comment" name="title" placeholder="Content Title: Some beautiful title here" required> 
   <input type="text" id="comment" name="url" placeholder="Content Link: insert-it-like-this-way-only" required>
   <textarea id="textarea" name="content" rows=10 cols=100></textarea>
