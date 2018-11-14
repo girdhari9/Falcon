@@ -50,6 +50,14 @@ footer > ul > li {
   display: inline-block;
   margin: 5px;
 }
+header {
+  text-align: center;
+  color: #555;
+}
+header > ul > li {
+  display: inline-block;
+  margin: 5px;
+}
 textarea {
   direction: rtl;
   -webkit-box-sizing: border-box;
@@ -357,4 +365,101 @@ tr:hover {background-color:#f5f5f5;}
 .title {
   color: grey;
   font-size: 18px;
+}
+
+
+.new-content,
+.new-auto {
+  margin-left: auto;
+  margin-right: auto
+}
+
+.new-content {
+  max-width: 980px
+}
+
+.new-card,
+.new-card-2 {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)
+}
+
+.new-card-4,
+.new-hover-shadow:hover {
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19)
+}
+
+.new-margin {
+  margin: 16px!important
+}
+
+.new-white,
+.new-hover-white:hover {
+  color: #000!important;
+  background-color: #fff!important
+}
+
+.new-container,
+.new-panel {
+  padding: 0.01em 16px
+}
+
+.new-col,
+.new-half,
+.new-third,
+.new-twothird,
+.new-threequarter,
+.new-quarter {
+  float: left;
+  width: 100%
+}
+
+.new-dropdown-hover.new-mobile,
+  .new-dropdown-hover.new-mobile .new-btn,
+  .new-dropdown-hover.new-mobile .new-button,
+  .new-dropdown-click.new-mobile,
+  .new-dropdown-click.new-mobile .new-btn,
+  .new-dropdown-click.new-mobile .new-button {
+    width: 100%
+  }
+
+.new-opacity,
+.new-hover-opacity:hover {
+  opacity: 0.60
+}
+
+.new-container:after,
+.new-container:before,
+.new-panel:after,
+.new-panel:before,
+.new-row:after,
+.new-row:before,
+.new-row-padding:after,
+.new-row-padding:before,
+.new-cell-row:before,
+.new-cell-row:after,
+.new-clear:after,
+.new-clear:before,
+.new-bar:before,
+.new-bar:after {
+  content: "";
+  display: table;
+  clear: both
+}
+
+.new-row-padding,
+.new-row-padding>.new-half,
+.new-row-padding>.new-third,
+.new-row-padding>.new-twothird,
+.new-row-padding>.new-threequarter,
+.new-row-padding>.new-quarter,
+.new-row-padding>.new-col {
+  padding: 0 8px
+}
+
+.new-border {
+  border: 1px solid #ccc!important
+}
+
+.new-padding-large {
+  padding: 12px 24px!important
 }

@@ -14,8 +14,8 @@ if (sure == true) {
   function extractComment(){
     var comment = $('#comment').val();
     comment = comment.replace(/(<([^>]+)>)/ig,"")
-    var content = "<p><b>Admin : </b>"+comment+"</p>";
-    var content2 = "<p><b>Anonymous : </b>"+comment+"</p>";
+    var content = "<p><b><i class=\"fa fa-user\"></i> Admin : </b>"+comment+"</p>";
+    var content2 = "<p><i class=\"fa fa-user\"></i> <b>Anonymous : </b>"+comment+"</p>";
     $.ajax({
       url:'/submit.comment/{{ post[2] }}',
       method: 'POST',
@@ -39,20 +39,23 @@ if (sure == true) {
 {% endblock %}
 
 {% block content %}
-<div class="single-post">
-
-  <a href="{{ currentUrl }}">
-    <h2>{{ post[1] }}</h2>
-  </a>
-
-  <div class="post-meta">
-    <p><b><i class="fa fa-calendar"></i></b> {{ post[5] }} - <b><i class="fa fa-user"></i> </b>{{ user[0] }}</p>
+<div class="new-content" style="max-width:1400px">
+    <div class="new-row">
+      <div class="new-col l12 s12">
+        <div class="new-card-4 new-margin new-white">
+            <div class="new-container">
+              <h3 align="center"><b>{{ post[1] }}</b></h3>
+              <h5 align="center"><b><i class="fa fa-user"></i> </b>{{ user[0] }} - <span class="new-opacity"><b><i class="fa fa-calendar"></i></b> {{ post[5] }}</span></h5>
+            </div>
+            <div class="new-container">
+              <p>{{ post[3]|safe }}</p>
+              <div class="new-row">
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <p>{{ post[3]|safe }}</p>
-
-</div>
-
 
 <div class="post-footer">
   <p>
@@ -63,14 +66,14 @@ if (sure == true) {
      {% endif %}</p>
 </div>
 <div>
-  <p><b>{{ comment|length }} Comments</b></p>
+  <p><b><i class="fa fa-comments"></i> {{ comment|length }} Comments</b></p>
   <hr>
   <div id="commetnDiv">
     {% for data in comment %}
     <p><b>{% if not data.userid|int == 0 %}
-            Admin
+            <i class="fa fa-user"></i> Admin
           {% else %} 
-            Anonymous 
+            <i class="fa fa-user"></i> Anonymous 
           {% endif %}
     :</b> {{data.comment}}</p>
     {% else %}
@@ -78,10 +81,9 @@ if (sure == true) {
     {% endfor %}
   </div>
   <hr>
-  <p>Add Comment:</p>
   <div class="formContainer">
     <input type=text id="comment" name="comment" placeholder="Start the discussion...">
-    <input type=submit value="Add Comment" onclick="extractComment()">
+    <button type=submit onclick="extractComment()" class="btn">Add Comment</button> 
   </div>
   <hr>
 </div>

@@ -34,8 +34,9 @@ def get_pages():
 
 def get_posts():
   posts = ""
-  fetch_posts = g.db.execute('select * from posts order by postid desc')
-  posts = [dict(postid=x[0], posttitle=x[1], posturl=x[2], postcontent=x[3], postauthor=x[4], postdate=x[5]) for x in fetch_posts.fetchall()]
+  fetch_posts = g.db.execute('select users.fullname, posts.* from posts left join users on users.userid = posts.postauthor order by postid desc')
+  # fetch_posts = g.db.execute('select * from posts order by postid desc')
+  posts = [dict(authorname=x[0], postid=x[1], posttitle=x[2], posturl=x[3], postcontent=x[4], postauthor=x[5], postdate=x[6]) for x in fetch_posts.fetchall()]
   return posts
 
 def getPosts(userid):
@@ -214,7 +215,7 @@ def publish():
       if not checkUrl(request.form['url']):
         flash('Give different Content Link!')
         return redirect(request.url)
-      if request.form["contenttype"] == "post":
+      if "post" == "post":
         g.db.execute('insert into posts (posttitle, posturl, postcontent, postauthor) values (?, ?, ?, ?)',
                      (request.form['title'], request.form['url'], request.form['content'], session['userid']))
         g.db.commit()
