@@ -45,10 +45,9 @@ Built using Python, Flask, sqlite3, FontAwesome and TinyMCE.
 
 ## End User Documentation:
 
-Install everything listed in requirements.txt using
+Install everything listed in requirements.txt using (or do it manually)
 
 	pip install -r requirements.txt
-or do it manually
 
 Clone the repository on your local system
 
@@ -58,10 +57,9 @@ Open the directory
 
 	cd Falcon
 
-Generate the sqlite database by running
+Generate the sqlite database by running (if falcon.db not already present)
 
 	sqlite3 falcon.db < schema.sql
-if falcon.db not already present
 
 setup a virtual environment
 
