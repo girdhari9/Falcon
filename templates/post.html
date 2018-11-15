@@ -14,13 +14,26 @@ if (sure == true) {
   function extractComment(){
     var comment = $('#comment').val();
     comment = comment.replace(/(<([^>]+)>)/ig,"")
-    var content = "<p><b><i class=\"fa fa-user\"></i> Admin : </b>"+comment+"</p>";
+    var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date+' '+time;
     var content2 = "<p><i class=\"fa fa-user\"></i> <b>Anonymous : </b>"+comment+"</p>";
     $.ajax({
       url:'/submit.comment/{{ post[2] }}',
       method: 'POST',
       data: { comment:comment },
       success: function (result) {
+        var content = '<p> \
+                        <div style=\"float: left;\"> \
+                          <b> \
+                              <i class="fa fa-user"></i> '+ result +' \
+                          </b> : '+ comment +' \
+                        </div> \
+                        <p align=\"right\"><i class=\"fa fa-calendar\"> '+ dateTime +'</i></p> \
+                      </p>'
+        var res = document.getElementById("totalCmt").textContent;
+        document.getElementById("totalCmt").innerHTML = '<b><i class="fa fa-comments"></i>&nbsp;'+ (parseInt(res) + 1)+' Comments</b>';
         if (result=="0") {
           $('#noComment').empty();
           $('#commetnDiv').append(content2);
@@ -74,16 +87,22 @@ if (sure == true) {
      {% endif %}</p>
 </div>
 <div>
-  <p><b><i class="fa fa-comments"></i> {{ comment|length }} Comments</b></p>
+  <p id="totalCmt"><b><i class="fa fa-comments"></i> {{ comment|length }} Comments</b></p>
   <hr>
   <div id="commetnDiv">
     {% for data in comment %}
-    <p><b>{% if not data.userid|int == 0 %}
-            <i class="fa fa-user"></i> Admin
+    <p>
+      <div style="float: left;">
+        <b>{% if not data.userid|int == 0 %}
+            <i class="fa fa-user"></i> {{data.fullname}}
           {% else %} 
-            <i class="fa fa-user"></i> Anonymous 
+            <i class="fa fa-user"></i> Anonymous
           {% endif %}
-    :</b> {{data.comment}}</p>
+        </b> : {{data.comment}}
+      </div> 
+      <p align="right"><i class="fa fa-calendar"> {{data.cmttime}}</i></p>
+    </p>
+
     {% else %}
     <p id="noComment">No Comment! Be the first to comment.</p>
     {% endfor %}

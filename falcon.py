@@ -81,7 +81,7 @@ def getPostsWithAuthor(userid):
   print(adminPost)
   return adminPost
 
-def getAdmin(userid):
+def getAuthors(userid):
   getDetail = g.db.execute('select * from users where not userid = ?',(userid,))
   adminProfile = [dict(userid=detail[0], username=detail[1], password=detail[2], fullname=detail[3], emailid=detail[4], mobile_no=detail[5]) for detail in getDetail.fetchall()]
   print adminProfile 
@@ -95,8 +95,12 @@ def getPostAuthor(posturl):
   return user
 
 def getCommnet(posturl):
-  getDetail = g.db.execute('select * from comments where postid = (select postid from posts where posturl= ?)',(posturl,))
-  comment = [dict(userid=detail[2], comment=detail[3], cmttime=detail[4]) for detail in getDetail.fetchall()]
+  getDetail = g.db.execute('select users.userid, users.fullname, comments.comment, comments.cmttime \
+                            FROM posts \
+                            INNER JOIN \
+                            (comments INNER JOIN users ON comments.userid = users.userid) ON posts.postid = comments.postid \
+                            WHERE (((posts.posturl)= ?))',(posturl,))
+  comment = [dict(userid=detail[0],fullname=detail[1], comment=detail[2], cmttime=detail[3]) for detail in getDetail.fetchall()]
   return comment
 
 def editpage(pageurl):
@@ -152,9 +156,6 @@ def page_not_found(e):
 
 @app.route('/')
 def show_index():
-  # user = "<script>alert(sdklhfal)</script>"
-  # username = user.subn(r'<(script).*?</\1>(?s)', '', 0, data)[0]
-  # print username
   return render_template('index.html', posts=get_posts(), pages=get_pages())
 
 @app.route('/post/<posturl>')
@@ -310,7 +311,7 @@ def getAdminList():
   else:
     abort(404)
   if session.get('logged_in'):
-    return render_template('users.html', profile=getAdmin(userid), pages=get_pages())
+    return render_template('users.html', profile=getAuthors(userid), pages=get_pages())
   else:
     abort(404)
 
@@ -381,9 +382,13 @@ def doComment(posturl):
   else:
     userid = 0
   if request.method == 'POST':
-
     g.db.execute('insert into comments (postid, userid, comment) values (?, ?, ?)',(postid, userid, request.form['comment']))
     g.db.commit()
+    if session.get('logged_in'):
+      getDetail = g.db.execute('select fullname from users where userid= ?', (userid,))
+      for x in getDetail.fetchall():
+        username = x[0]
+      return username
     return str(userid)
   else:
     abort(404)
