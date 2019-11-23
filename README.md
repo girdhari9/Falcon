@@ -1,13 +1,10 @@
-# Team Falcon11
+# Falcon
 
 Designed a fully working blogger website having features of creating, publishing and viewing blogs and comments etc with specific functionalities mentioned in the problem statement provided.
 
-## Team Members:
+## Developed by:
 
-1) Giridhari Lal Gupta 		2018201019
-2) Monu Tayal			2018201042
-3) Danish Mukthar		2018201016
-4) Shubham Pokhriyal		2018201080
+Giridhari Lal Gupta 	2018201019
 
 ## Features:
 
